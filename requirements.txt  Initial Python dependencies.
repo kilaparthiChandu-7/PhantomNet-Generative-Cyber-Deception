@@ -1,0 +1,10 @@
+
+fastapi
+uvicorn
+requests
+pydantic
+pytest
+
+
+
+These are the initial Python dependencies. We'll install and test them when setting up the local development environment.
