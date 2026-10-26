@@ -1,0 +1,90 @@
+
+{
+  "company": {
+    "name": "Nexora Technologies",
+    "industry": "Cloud Software and IT Services",
+    "founded": 2016,
+    "headquarters": "Austin, Texas",
+    "description": "A fictional enterprise technology company used for cybersecurity deception research."
+  },
+  "security_context": {
+    "environment": "Isolated honeypot simulation",
+    "data_classification": "Synthetic and fictional",
+    "purpose": "Generate consistent mock corporate documents for authorized security testing"
+  },
+  "executives": [
+    {
+      "id": "EMP001",
+      "name": "Olivia Carter",
+      "role": "Chief Executive Officer"
+    },
+    {
+      "id": "EMP002",
+      "name": "Ethan Brooks",
+      "role": "Chief Technology Officer"
+    },
+    {
+      "id": "EMP003",
+      "name": "Sophia Mitchell",
+      "role": "Head of Security"
+    },
+    {
+      "id": "EMP004",
+      "name": "Noah Bennett",
+      "role": "Cloud Infrastructure Manager"
+    }
+  ],
+  "departments": [
+    "Engineering",
+    "Human Resources",
+    "Finance",
+    "IT Security",
+    "Cloud Infrastructure"
+  ],
+  "technology_stack": [
+    "Python",
+    "PostgreSQL",
+    "Docker",
+    "Linux",
+    "Cloud Monitoring"
+  ],
+  "fictional_projects": [
+    {
+      "name": "Project Northstar",
+      "description": "Internal cloud monitoring improvement initiative",
+      "owner": "Noah Bennett",
+      "status": "In Progress"
+    },
+    {
+      "name": "Project Lighthouse",
+      "description": "Security event monitoring and reporting",
+      "owner": "Sophia Mitchell",
+      "status": "Planning"
+    }
+  ],
+  "corporate_vocabulary": [
+    "quarterly review",
+    "infrastructure migration",
+    "access audit",
+    "incident response",
+    "deployment window",
+    "service reliability"
+  ],
+  "file_generation": {
+    "default_directories": [
+      "Finance",
+      "Engineering",
+      "HumanResources",
+      "IT",
+      "Security",
+      "Projects"
+    ],
+    "default_file_extensions": [
+      ".txt",
+      ".csv",
+      ".json",
+      ".log",
+      ".md"
+    ]
+  }
+}
