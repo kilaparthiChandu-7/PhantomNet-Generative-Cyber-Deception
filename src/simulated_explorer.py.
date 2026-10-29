@@ -1,0 +1,152 @@
+
+from pathlib import Path
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+DOCUMENTS_ROOT = (PROJECT_ROOT / "generated_docs").resolve()
+
+
+def get_departments():
+    """Return department folders inside the simulated document directory."""
+    if not DOCUMENTS_ROOT.exists():
+        return []
+
+    return sorted(
+        folder.name
+        for folder in DOCUMENTS_ROOT.iterdir()
+        if folder.is_dir() and not folder.is_symlink()
+    )
+
+
+def get_documents(department):
+    """List Markdown documents from one simulated department."""
+    department_path = (DOCUMENTS_ROOT / department).resolve()
+
+    # Prevent access outside the simulated document directory.
+    if not department_path.is_relative_to(DOCUMENTS_ROOT):
+        return []
+
+    if not department_path.is_dir():
+        return []
+
+    documents = []
+
+    for file_path in sorted(department_path.iterdir()):
+        if file_path.is_symlink() or not file_path.is_file():
+            continue
+
+        if file_path.suffix.lower() == ".md":
+            documents.append(file_path.name)
+
+    return documents
+
+
+def read_document(department, filename):
+    """Read a Markdown file from the simulated document directory."""
+    department_path = (DOCUMENTS_ROOT / department).resolve()
+    file_path = (department_path / filename).resolve()
+
+    # Keep both the department and document inside the simulation.
+    if not department_path.is_relative_to(DOCUMENTS_ROOT):
+        raise ValueError("Invalid department path.")
+
+    if not file_path.is_relative_to(department_path):
+        raise ValueError("Invalid document path.")
+
+    if file_path.is_symlink() or not file_path.is_file():
+        raise FileNotFoundError("Document not found.")
+
+    if file_path.suffix.lower() != ".md":
+        raise ValueError("Only Markdown documents can be opened.")
+
+    return file_path.read_text(encoding="utf-8")
+
+
+def show_departments():
+    """Display available fictional departments."""
+    departments = get_departments()
+
+    print("\n--- PhantomNet Simulated File Explorer ---")
+
+    if not departments:
+        print("No department folders found.")
+        print("Generate sample documents using the Day 4 script.")
+        return
+
+    for number, department in enumerate(departments, start=1):
+        print(f"{number}. {department}")
+
+    print("0. Exit")
+
+
+def explore_department(department):
+    """Display and open documents from one department."""
+    while True:
+        documents = get_documents(department)
+
+        print(f"\n--- Department: {department} ---")
+
+        if not documents:
+            print("No Markdown documents found in this department.")
+            return
+
+        for number, filename in enumerate(documents, start=1):
+            print(f"{number}. {filename}")
+
+        print("0. Back")
+
+        choice = input("Choose a document number: ").strip()
+
+        if choice == "0":
+            return
+
+        if not choice.isdigit():
+            print("Please enter a valid number.")
+            continue
+
+        index = int(choice) - 1
+
+        if index < 0 or index >= len(documents):
+            print("Invalid selection.")
+            continue
+
+        try:
+            content = read_document(department, documents[index])
+            print("\n" + "=" * 50)
+            print(content)
+            print("=" * 50)
+        except (OSError, ValueError) as error:
+            print(f"Could not open document: {error}")
+
+
+def main():
+    if not DOCUMENTS_ROOT.exists():
+        print("The generated_docs folder does not exist.")
+        print("Run the Day 4 generator with --write first.")
+        return
+
+    while True:
+        show_departments()
+
+        choice = input("\nChoose a department: ").strip()
+
+        if choice == "0":
+            print("Exiting PhantomNet explorer.")
+            break
+
+        departments = get_departments()
+
+        if not choice.isdigit():
+            print("Please enter a valid number.")
+            continue
+
+        index = int(choice) - 1
+
+        if index < 0 or index >= len(departments):
+            print("Invalid selection.")
+            continue
+
+        explore_department(departments[index])
+
+
+if __name__ == "__main__":
+    main()
