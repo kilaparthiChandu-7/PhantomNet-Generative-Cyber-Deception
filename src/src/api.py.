@@ -1,0 +1,67 @@
+
+from fastapi import FastAPI, HTTPException, Query
+
+from src.file_generator import (
+    load_company_lore,
+    generate_filenames
+)
+
+app = FastAPI(
+    title="PhantomNet API",
+    description="API for a fictional corporate cyber-deception simulator",
+    version="1.0.0"
+)
+
+
+@app.get("/")
+def home():
+    return {
+        "message": "Welcome to PhantomNet API",
+        "status": "running"
+    }
+
+
+@app.get("/api/health")
+def health_check():
+    return {
+        "status": "healthy",
+        "project": "PhantomNet"
+    }
+
+
+@app.get("/api/company")
+def get_company():
+    try:
+        lore = load_company_lore()
+        return lore
+    except (FileNotFoundError, ValueError) as error:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Could not load company configuration: {error}"
+        )
+
+
+@app.get("/api/files/filenames")
+def get_filenames(
+    count: int = Query(default=10, ge=1, le=50),
+    seed: int = Query(default=42)
+):
+    try:
+        lore = load_company_lore()
+
+        filenames = generate_filenames(
+            lore,
+            count=count,
+            seed=seed
+        )
+
+        return {
+            "count": len(filenames),
+            "filenames": filenames
+        }
+
+    except (FileNotFoundError, ValueError) as error:
+        raise HTTPException(
+            status_code=400,
+            detail=str(error)
+        )
